@@ -1,0 +1,28 @@
+<.header>
+  Post <%= @post.id %>
+  <:actions>
+    <.link patch={~p"/posts/#{@post}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit post</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Username"><%= @post.username %></:item>
+  <:item title="Post"><%= @post.body %></:item>
+  <:item title="Likes count"><%= @post.likes_count %></:item>
+  <:item title="Reposts count"><%= @post.reposts_count %></:item>
+</.list>
+
+<.back navigate={~p"/"}>Back to posts</.back>
+
+<.modal :if={@live_action == :edit} id="post-modal" show on_cancel={JS.patch(~p"/posts/#{@post}")}>
+  <.live_component
+    module={CirclesWeb.PostLive.FormComponent}
+    id={@post.id}
+    title={@page_title}
+    action={@live_action}
+    post={@post}
+    patch={~p"/#{@post}"}
+  />
+</.modal>
